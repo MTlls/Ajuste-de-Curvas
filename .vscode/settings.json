@@ -1,0 +1,13 @@
+{
+    "files.associations": {
+        "*.s": "sql",
+        "libfloat.h": "c",
+        "libdouble.h": "c",
+        "float.h": "c",
+        "utils.h": "c",
+        "libmatriz.h": "c",
+        "libgauss.h": "c",
+        "stdlib.h": "c",
+        "stdio.h": "c"
+    }
+}
