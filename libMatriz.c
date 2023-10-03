@@ -55,36 +55,21 @@ void alocaResultados(Intervalo_t** variaveis1, Intervalo_t** variaveis2, Interva
     }
 }
 
-void leMatriz(int n, Intervalo_t* original, Intervalo_t* matriz1, Intervalo_t* matriz2, Intervalo_t* matriz3, Intervalo_t* independentes, Intervalo_t* independentes1, Intervalo_t* independentes2, Intervalo_t* independentes3) {
+void leMatriz(int n, Intervalo_t* original, Intervalo_t* independentes) {
     /* leitura da matriz */
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
-            if (scanf("%lf", &original[(i * n) + j]) == 0) {
+            if (scanf("%lf", &original[(i * n) + j].maior.d) == 0) {
                 fprintf(stderr, "Erro ao ler a entrada.\n");
                 exit(1);
             }
-            matriz1[(i * n) + j] = original[(i * n) + j];
-            matriz2[(i * n) + j] = original[(i * n) + j];
-            matriz3[(i * n) + j] = original[(i * n) + j];
+            obtemIntervalo(&original[(i * n) + j]);
         }
-        if (scanf("%lf", &independentes[i]) == 0) {
+        if (scanf("%lf", &independentes[i].maior.d) == 0) {
             fprintf(stderr, "Erro ao ler a entrada.\n");
             exit(1);
         }
-
-        independentes1[i] = independentes[i];
-        independentes2[i] = independentes[i];
-        independentes3[i] = independentes[i];
-    }
-}
-
-void imprimeMatriz(int n, Intervalo_t* matriz, Intervalo_t* independentes) {
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            printf("%.5f ", matriz[(i * n) + j]); /* c * totalColunas + l */
-        }
-        printf("%.5f", independentes[i]);
-        printf("\n");
+        obtemIntervalo(&independentes[i]);
     }
 }
 
@@ -108,7 +93,7 @@ void trocaLinhas(Intervalo_t* matriz, Intervalo_t* independentes, int i, int piv
 
 void imprimeVetor(Intervalo_t* vetor, int n) {
     for (int i = 0; i < n; i++) {
-        printf(" %.8e ", vetor[i]);
+        printIntervalo(vetor[i]);
     }
 }
 

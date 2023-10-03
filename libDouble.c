@@ -2,7 +2,7 @@
 #include "utils.h"
 /* Imprime um intervalo */
 void printIntervalo(Intervalo_t intervalo) {
-	printf("[%1.16e, %1.16e]", intervalo.menor.d, intervalo.maior.d);
+	printf("[%1.8e, %1.8e]", intervalo.menor.d, intervalo.maior.d);
 }
 
 void printOperacao(Intervalo_t a, char op, Intervalo_t b) {
@@ -77,11 +77,20 @@ double max(real_t a, real_t b, real_t c, real_t d) {
 	return max;
 }
 
-Intervalo_t somaIntervalos(Intervalo_t a, Intervalo_t b) {
+Intervalo_t soma_intervalos(Intervalo_t a, Intervalo_t b) {
 	Intervalo_t resultado;
 
     resultado.menor.d = soma(a.menor, b.menor);
 	resultado.maior.d = soma(a.maior, b.maior);
+
+    return resultado;
+}
+
+Intervalo_t sub_intervalos(Intervalo_t a, Intervalo_t b) {
+	Intervalo_t resultado;
+
+	resultado.menor.d = sub(a.menor, b.maior);
+	resultado.maior.d = sub(a.maior, b.menor);
 
     return resultado;
 }
@@ -101,9 +110,6 @@ Intervalo_t escolheOperacao(Intervalo_t *a, char op, Intervalo_t *b) {
 		resultado = mult_intervalos(*a, *b);
 		break;
 	case '/':
-		resultado = mult_intervalos(*a, inverte(*b));
-		if(resultado.maior.d == INFINITY)
-			resultado.menor.d = -INFINITY;
 		break;
 	default:
 		printf("Operação inválida\n");
@@ -148,6 +154,13 @@ Intervalo_t mult_intervalos(Intervalo_t a, Intervalo_t b) {
 	resultado.maior.d = max(mult(a.menor, b.menor), mult(a.menor, b.maior),
 	                        mult(a.maior, b.menor), mult(a.maior, b.maior));
 
+	return resultado;
+}
+
+Intervalo_t div_intervalos(Intervalo_t a, Intervalo_t b) {
+	Intervalo_t resultado = mult_intervalos(a, inverte(b));
+	if(resultado.maior.d == INFINITY)
+		resultado.menor.d = -INFINITY;
 	return resultado;
 }
 

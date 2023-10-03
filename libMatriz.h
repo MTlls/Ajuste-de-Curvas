@@ -14,7 +14,7 @@ void alocaIndependentes(Intervalo_t **independentes, Intervalo_t **independentes
 
 void alocaResultados(Intervalo_t** variaveis1, Intervalo_t** variaveis2, Intervalo_t ** variaveis3, int n);
 
-void leMatriz(int n, Intervalo_t* original, Intervalo_t* matriz1, Intervalo_t* matriz2, Intervalo_t* matriz3, Intervalo_t* independentes, Intervalo_t *independentes1, Intervalo_t *independentes2, Intervalo_t *independentes3);
+void leMatriz(int n, Intervalo_t* original, Intervalo_t* independentes);
 
 void imprimeMatriz(int n, Intervalo_t* matriz, Intervalo_t* independentes);
 

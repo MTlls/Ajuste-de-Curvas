@@ -12,6 +12,12 @@ typedef struct {
     real_t maior;
 } Intervalo_t; 
 
+struct ponto {
+	Intervalo_t x;  // eixo das abcissas.
+	Intervalo_t y;  // eixo das ordenadas.
+};
+typedef struct ponto ponto_t;
+
 /* Imprime um intervalo */
 void printIntervalo(Intervalo_t intervalo);
 
@@ -86,5 +92,21 @@ Intervalo_t potenciacao2(Intervalo_t a, int n);
 /**
  * Função que retorna a soma de dois intervalos.
 */
-Intervalo_t somaIntervalos(Intervalo_t a, Intervalo_t b);
+Intervalo_t soma_intervalos(Intervalo_t a, Intervalo_t b);
+
+/**
+ * Realiza a divisão de intervalos
+ */
+Intervalo_t div_intervalos(Intervalo_t a, Intervalo_t b);
+
+/**
+ * Função que retorna a subtração de dois intervalos.
+*/
+Intervalo_t sub_intervalos(Intervalo_t a, Intervalo_t b);
+
+/**
+ * Realiza a multiplicação de intervalos
+ */
+Intervalo_t mult_intervalos(Intervalo_t a, Intervalo_t b);
+
 #endif

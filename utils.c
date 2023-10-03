@@ -33,17 +33,3 @@ string_t markerName(string_t baseName, int n) {
 
 	return mark;
 }
-
-real_t *getIntervalo(real_t *entrada, int_t n, real_t *intervalo) {
-	double maior = entrada[0].d, menor = entrada[0].d;
-
-	for(int_t i = 1; i < n; i++) {
-		maior = maior < entrada[i].d ? entrada[i].d : maior;
-		menor = menor > entrada[i].d ? entrada[i].d : menor;
-	}
-
-	intervalo[0].d = menor;
-	intervalo[1].d = maior;
-
-	return intervalo;
-}

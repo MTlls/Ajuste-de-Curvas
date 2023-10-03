@@ -1,11 +1,12 @@
 #include "libGauss.h"
 #include "libDouble.h"
+#include "libMatriz.h"
 
 int encontraMax(Intervalo_t* matriz, int tam, int i) {
     int pos = i;
 
-    for (int j = i; j < tam; j++) {
-        if (fabs(matriz[(j * tam) + i]) > fabs(matriz[(i * tam) + i])) {
+    for (int j = i+1; j < tam; j++) {
+        if (fabs(matriz[(j * tam) + i].maior.d) > fabs(matriz[(i * tam) + i].maior.d)) {
             pos = j;
         }
     }
@@ -22,74 +23,15 @@ void eliminacaoGauss(Intervalo_t* matriz, Intervalo_t* independentes, int n) {
         }
 
         for (int k = i + 1; k < n; k++) {
-            Intervalo_t m = matriz[(k * n) + i] / matriz[(i * n) + i];
-            matriz[(k * n) + i] = 0;
+            Intervalo_t m = div_intervalos(matriz[(k * n) + i], matriz[(i * n) + i]);
+            matriz[(k * n) + i].menor.i = 0;
+            matriz[(k * n) + i].maior.i = 0;
+
             for (int j = i + 1; j < n; j++) {
-                matriz[(k * n) + j] -= matriz[(i * n) + j] * m;
-            }
-            independentes[k] -= independentes[i] * m;
-        }
-    }
-}
-
-void eliminacaoGaussSemMultiplicador(Intervalo_t* matriz, Intervalo_t* independentes, int n) {
-    for (int i = 0; i < n - 1; i++) {
-        int pivo = encontraMax(matriz, n, i);
-
-        if (pivo != i) {
-            trocaLinhas(matriz, independentes, i, pivo, n);
-        }
-
-        for (int k = i + 1; k < n; k++) {
-            for (int j = i + 1; j < n; j++) {
-                matriz[(k * n) + j] = (matriz[(k * n) + j] * matriz[(i * n) + i]) - (matriz[(i * n) + j] * matriz[(k * n) + i]);
-            }
-            matriz[(k * n) + i] = 0;
-            independentes[k] = (matriz[(i * n) + i] * independentes[k]) - (independentes[i] * matriz[(k * n) + i]);
-        }
-    }
-}
-
-void semPivoteamento(Intervalo_t* matriz, Intervalo_t* independentes, int n) {
-    Intervalo_t pivo = 0.0;
-    // qntd maxima de multiplicadores e n-1
-    Intervalo_t m[n - 1];
-
-    for (int i = 0; i < n - 1; i++) {
-        // captura o pivo
-        pivo = matriz[(i * n) + i];
-        // valor do pivo sempre sera 1 depois ad divisao
-        matriz[(i * n) + i] = 1;
-
-        // salva o termo independente
-        independentes[i] /= pivo;
-
-        // realiza-se a divisao da linha do pivo, enquanto armazena os multiplicadores
-        for (int j = i; j < n - 1; j++) {
-            // nova linha do pivo dividida pelo pivo
-            matriz[(i * n) + (j + 1)] /= pivo;
-
-            // armazenado o multiplicador
-            m[j - i] = matriz[((j + 1) * n) + i];
-
-            // Zeramento da coluna abaixo do pivo
-            matriz[((j + 1) * n) + i] = 0;
-        }
-
-        // realiza-se a subtração dos coeficientes
-        for (int k = i; k < n - 1; k++) {
-            // subtracao do termo independente
-            independentes[k + 1] -= (m[k - i] * independentes[i]);
-
-            // se o multiplicador encontrar um 0, não havera mudancas na coluna
-            if (matriz[(i * n) + k + 1] == 0) {
-                break;
+                matriz[(k * n) + j] = sub_intervalos(matriz[(k * n) + j], mult_intervalos(matriz[(i * n) + j], m));
             }
 
-            // mudança da parte abaixo da linha do pivo (o anulamento foi feito acima no codigo)
-            for (int j = i + 1; j < n; j++) {
-                matriz[(j * n) + (k + 1)] -= ((m[j - (i + 1)]) * matriz[(i * n) + k + 1]);
-            }
+            independentes[k] = sub_intervalos(independentes[k], mult_intervalos(independentes[i], m));
         }
     }
 }
@@ -98,9 +40,9 @@ void retrossubs(Intervalo_t* matriz, Intervalo_t* independentes, Intervalo_t* va
     for (int i = n - 1; i >= 0; i--) {
         variaveis[i] = independentes[i];
         for (int j = i + 1; j < n; j++) {
-            variaveis[i] -= matriz[(i * n) + j] * variaveis[j];
+            variaveis[i] = sub_intervalos(variaveis[i], mult_intervalos(matriz[(i * n) + j], variaveis[j]));
         }
-        variaveis[i] /= matriz[(i * n) + i];
+        variaveis[i] = div_intervalos(variaveis[i], matriz[(i * n) + i]);
     }
 }
 
@@ -109,9 +51,9 @@ Intervalo_t* calculaResiduo(Intervalo_t* matriz, Intervalo_t* independentes, Int
 
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
-            residuo[i] += (matriz[(i * n) + j] * solucao[j]);
+            residuo[i] = soma_intervalos(residuo[i], mult_intervalos(matriz[(i * n) + j] , solucao[j]));
         }
-        residuo[i] -= independentes[i];
+        residuo[i] = sub_intervalos(residuo[i], independentes[i]);
     }
 
     return residuo;
