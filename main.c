@@ -12,12 +12,12 @@ void nome(ponto_t *xy, Intervalo_t *coeficientes, Intervalo_t *independentes, in
 		for(int_t j = 0; j < numCoeficientesG; j++) {
 			
 			for(int_t k = 0; k < numPontos; k++) {
-				coeficientes[(i * numCoeficientesG) + j] = soma_intervalos(coeficientes[(i * numCoeficientesG) + j], mult_intervalos(potenciacao2(xy[k].x, i), potenciacao2(xy[k].x, j)));
+				coeficientes[(i * numCoeficientesG) + j] = soma_intervalos(coeficientes[(i * numCoeficientesG) + j], mult_intervalos(potenciacao(xy[k].x, i), potenciacao(xy[k].x, j)));
 			}
 		}
 
 		for(int k = 0; k < numPontos; k++) {
-			independentes[i] = soma_intervalos(independentes[i], mult_intervalos(potenciacao2(xy[k].x, i), xy[k].y));
+			independentes[i] = soma_intervalos(independentes[i], mult_intervalos(potenciacao(xy[k].x, i), xy[k].y));
 		}
 	}
 }

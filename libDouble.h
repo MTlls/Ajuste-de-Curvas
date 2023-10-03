@@ -40,12 +40,11 @@ double multiplica(real_t a, real_t b);
  * Subtração de dois números real_t
 */
 double sub(real_t a, real_t b);
+
 /**
  * Divisão de dois números real_t
 */
 double divisao(real_t a, real_t b);
-
-Intervalo_t escolheOperacao(Intervalo_t *a, char op, Intervalo_t *b);
 
 /**
  * Função que ajusta o intervalo
@@ -78,16 +77,14 @@ double erroAbs(Intervalo_t x);
 double erroRelativo(Intervalo_t x);
 
 /**
- * Funcao que zera n intervalos
+ * Função que zera n intervalos
 */
 void zeraIntervalos(Intervalo_t *intervalos, int n);
 
 /**
- * Funcao que calcula a potencia de um intervalo a um grau N.
+ * Função que calcula a potencia de um intervalo a um grau N.
 */
-void potenciacao(Intervalo_t a, int n);
-
-Intervalo_t potenciacao2(Intervalo_t a, int n);
+Intervalo_t potenciacao(Intervalo_t a, int_t n);
 
 /**
  * Função que retorna a soma de dois intervalos.
@@ -108,5 +105,20 @@ Intervalo_t sub_intervalos(Intervalo_t a, Intervalo_t b);
  * Realiza a multiplicação de intervalos
  */
 Intervalo_t mult_intervalos(Intervalo_t a, Intervalo_t b);
+
+/**
+ * Função que captura o mínimo entre 4 valores double
+*/
+double min(real_t a, real_t b, real_t c, real_t d);
+
+/**
+ * Função que captura o mínimo entre 4 valores double
+*/
+double max(real_t a, real_t b, real_t c, real_t d);
+
+/**
+ * Função que retorna o máximo entre 2 valores double
+*/
+double maxBetween2(double a, double b);
 
 #endif
