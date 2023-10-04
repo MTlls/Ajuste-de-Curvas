@@ -1,5 +1,6 @@
 #include "libGauss.h"
 #include "libDouble.h"
+#include <math.h>
 
 int encontraMax(Intervalo_t* matriz, int tam, int i) {
     int pos = i;

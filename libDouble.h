@@ -1,7 +1,6 @@
 #ifndef _LIBDOUBLE_H_
 #define _LIBDOUBLE_H_
 
-#include <math.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>

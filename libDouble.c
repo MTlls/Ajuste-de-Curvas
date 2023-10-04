@@ -1,6 +1,7 @@
 #include "libDouble.h"
 #include "utils.h"
-/* Imprime um intervalo */
+#include <math.h>
+
 void printIntervalo(Intervalo_t intervalo) {
 	printf("[%15.8e, %15.8e]", intervalo.menor.d, intervalo.maior.d);
 }

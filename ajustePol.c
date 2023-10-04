@@ -3,6 +3,7 @@
 #include "libDouble.h"
 #include "utils.h"
 #include "libGauss.h"
+#include "likwid.h"
 
 /* vetor de pontos, coeficientes do SL, independentes do SL, numero de pontos, grau do polinomio */
 void nome(ponto_t *xy, Intervalo_t *coeficientes, Intervalo_t *independentes, int_t numPontos, int_t numCoeficientesG) {
@@ -23,6 +24,7 @@ void nome(ponto_t *xy, Intervalo_t *coeficientes, Intervalo_t *independentes, in
 
 int main() {
 	int_t n = 0, k = 0;
+	real_t tempoGeraSL, tempoSolSL;
 	ponto_t *pontos = NULL;
 	Intervalo_t *coeficientes = NULL;
 	Intervalo_t *independentes = NULL;
@@ -30,8 +32,15 @@ int main() {
 	Intervalo_t *residuo = NULL;
 
 
+    // Inicializa o marcador do likwid
+    LIKWID_MARKER_INIT;
+
 	// Obtém o grau N do polinômio e a quantidade K de pontos.
-	scanf("%ld %ld", &n, &k);
+	if(scanf("%ld %ld", &n, &k) == 0){
+		fprintf(stderr, "Erro ao ler a entrada.\n");
+        exit(1);
+    }
+	
 
 	// Inicializa-se um array de K structs.
 	pontos = (ponto_t *)calloc(k, sizeof(ponto_t));
@@ -44,12 +53,16 @@ int main() {
 
 	// Popula com os pontos e ajusta cada intervalo.
 	for(int_t i = 0; i < k; i++) {
-		scanf("%lf %lf", &(pontos[i].x.maior.d), &(pontos[i].y.maior.d));
+		if(scanf("%lf %lf", &(pontos[i].x.maior.d), &(pontos[i].y.maior.d)) == 0){
+			fprintf(stderr, "Erro ao ler a entrada.\n");
+        	exit(1);
+    	}
 		obtemIntervalo(&(pontos[i].x));
 		obtemIntervalo(&(pontos[i].y));
 	}
 
 	// Essa função é responsável por gerar os coeficientes e termos independentes do SL
+
 	nome(pontos, coeficientes, independentes, k, (n + 1));
 
 	printf("Coeficientes:\n");
@@ -61,23 +74,39 @@ int main() {
 		printf("\n");
 	}
 
+	
+    // Marcador para a geração dos coeficientes e dos termos independentes
+    LIKWID_MARKER_START("GERACAO_SL");
+
+	tempoGeraSL.d = timestamp();
 	eliminacaoGauss(coeficientes, independentes, (n + 1));
+    tempoGeraSL.d = timestamp() - tempoGeraSL.d;
+    LIKWID_MARKER_STOP("GERACAO_SL");
+	
 
 	solucao = (Intervalo_t *)calloc((n + 1), sizeof(Intervalo_t));
-	retrossubs(coeficientes, independentes, solucao, (n + 1));
 
+	// Marcador para a solucao do SL
+    LIKWID_MARKER_START("SOLUCAO_SL");
+	
+	tempoSolSL.d = timestamp();
+	retrossubs(coeficientes, independentes, solucao, (n + 1));
+	tempoSolSL.d = timestamp() - tempoSolSL.d;
+
+	LIKWID_MARKER_STOP("SOLUCAO_SL");
+	
 	// Aloca os resíduos
 	residuo = calculaResiduo(solucao, pontos, n, k);
 
+    // Fecha o marcador do likwid
+    LIKWID_MARKER_CLOSE;
+	
 	printf("\nResíduo:\n");
 	imprimeVetorLinha(residuo, k);
 
-	printf("\nSolução:\n");
-	for (int i = 0; i < (n+1); i++) {
-		printf("%c", (97+i));
-		printIntervalo(solucao[i]);
-		putchar('\n');
-	}
+	putchar('\n');
+	printf("tgeraSL: %lf\n", tempoGeraSL.d);
+	printf("tsolSL: %lf\n", tempoSolSL.d);
     
 	free(pontos);
 	free(coeficientes);
