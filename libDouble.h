@@ -77,11 +77,6 @@ double erroAbs(Intervalo_t x);
 double erroRelativo(Intervalo_t x);
 
 /**
- * Função que zera n intervalos
-*/
-void zeraIntervalos(Intervalo_t *intervalos, int n);
-
-/**
  * Função que calcula a potencia de um intervalo a um grau N.
 */
 Intervalo_t potenciacao(Intervalo_t a, int_t n);

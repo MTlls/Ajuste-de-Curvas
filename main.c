@@ -3,7 +3,6 @@
 #include "libDouble.h"
 #include "utils.h"
 #include "libGauss.h"
-#include "libMatriz.h"
 
 /* vetor de pontos, coeficientes do SL, independentes do SL, numero de pontos, grau do polinomio */
 void nome(ponto_t *xy, Intervalo_t *coeficientes, Intervalo_t *independentes, int_t numPontos, int_t numCoeficientesG) {
@@ -68,12 +67,12 @@ int main() {
 	retrossubs(coeficientes, independentes, solucao, (n + 1));
 
 	// Aloca os resíduos
-	residuo = calculaResiduo(coeficientes, independentes, solucao, (n+1));
+	residuo = calculaResiduo(solucao, pontos, n, k);
 
-	printf("\n\nResíduo:");
-	imprimeVetor(residuo, (n+1));
+	printf("\nResíduo:\n");
+	imprimeVetorLinha(residuo, k);
 
-	printf("\n\nSolução:\n");
+	printf("\nSolução:\n");
 	for (int i = 0; i < (n+1); i++) {
 		printf("%c", (97+i));
 		printIntervalo(solucao[i]);

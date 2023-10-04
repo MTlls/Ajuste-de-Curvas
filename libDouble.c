@@ -2,7 +2,7 @@
 #include "utils.h"
 /* Imprime um intervalo */
 void printIntervalo(Intervalo_t intervalo) {
-	printf("[%1.8e, %1.8e]", intervalo.menor.d, intervalo.maior.d);
+	printf("[%15.8e, %15.8e]", intervalo.menor.d, intervalo.maior.d);
 }
 
 double soma(real_t a, real_t b) {

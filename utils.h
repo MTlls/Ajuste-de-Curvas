@@ -40,10 +40,4 @@ typedef double rtime_t;
 rtime_t timestamp(void);
 string_t markerName(string_t baseName, int n);
 
-/*
- * Retorna um vetor de duas posicoes indicando o menor e o maior valor do vetor de entrada de n elementos.
- */
-real_t *getIntervalo(real_t *entrada, int_t n, real_t *intervalo);
-
 #endif // __UTILS_H__
-
