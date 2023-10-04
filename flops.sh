@@ -12,6 +12,7 @@ PURGE="purge"
 
 if [ $# -ne 1 ]; then
     echo "O programa não foi chamado com o argumento correto." >&2
+    echo "source flops.sh <entrada>" >&2
     return 1
 fi
 
