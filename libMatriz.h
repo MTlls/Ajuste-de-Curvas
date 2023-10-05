@@ -40,7 +40,7 @@ void imprimeVetor(Intervalo_t *vetor, int n);
 void imprimeVetorLinha(Intervalo_t* vetor, int n);
 
 /**
- * Função que gera os coeficientes e os termos independentes do SL, utilizando-se do método dos mínimos quadrados.
+ * Função que gera os coeficientes e os termos independentes do SL, utilizando-se do método dos mínimos quadrados. Mas sem a repetição dos somatorios
  * OBS: com intervalos.
 */
 void geraSLMinimosQuadrados(ponto_t *xy, Intervalo_t *coeficientes, Intervalo_t *independentes, int_t numPontos, int_t numCoeficientesG);

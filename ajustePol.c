@@ -44,10 +44,16 @@ int main() {
 		obtemIntervalo(&(pontos[i].y));
 	}
 
-	// Essa função é responsável por gerar os coeficientes e termos independentes do SL
+	
+    // Marcador para a geração dos coeficientes e dos termos independentes
+    LIKWID_MARKER_START("GERACAO_SL");
 
+	tempoGeraSL.d = timestamp();
 	geraSLMinimosQuadrados(pontos, coeficientes, independentes, k, (n + 1));
-
+	eliminacaoGauss(coeficientes, independentes, (n + 1));
+    tempoGeraSL.d = timestamp() - tempoGeraSL.d;
+    LIKWID_MARKER_STOP("GERACAO_SL");
+	
 	printf("Coeficientes:\n");
 	for(int_t i = 0; i < n+1; i++) {
 		for(int_t j = 0; j < n+1; j++) {
@@ -57,15 +63,6 @@ int main() {
 		printf("\n");
 	}
 
-	
-    // Marcador para a geração dos coeficientes e dos termos independentes
-    LIKWID_MARKER_START("GERACAO_SL");
-
-	tempoGeraSL.d = timestamp();
-	eliminacaoGauss(coeficientes, independentes, (n + 1));
-    tempoGeraSL.d = timestamp() - tempoGeraSL.d;
-    LIKWID_MARKER_STOP("GERACAO_SL");
-	
 
 	solucao = (Intervalo_t *)calloc((n + 1), sizeof(Intervalo_t));
 
