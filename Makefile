@@ -7,17 +7,17 @@ DISTFILES = *.c *.h README* Makefile *.in *.sh
 DISTDIR = `basename ${PWD}`
 
 
-objs = ajustePol.o libDouble.o utils.o libGauss.o
+objs = ajustePol.o libMatematicaDouble.o utils.o libMatriz.o
 
 all: $(PROGRAM)
 
 ajustePol: $(objs)
 	$(CC) $^ $(CFLAGS) $(LFLAGS) -o $@
 
-main.o: main.c libDouble.h utils.h
-libDouble.o: libDouble.c libDouble.h utils.h
-utils.o: utils.c utils.h libDouble.h
-libGauss.o: libGauss.c libGauss.h libDouble.h
+main.o: main.c libMatematicaDouble.h utils.h
+libMatematicaDouble.o: libMatematicaDouble.c libMatematicaDouble.h utils.h
+utils.o: utils.c utils.h libMatematicaDouble.h
+libMatriz.o: libMatriz.c libMatriz.h libMatematicaDouble.h
 
 clean:
 	@echo "Limpando sujeira..."

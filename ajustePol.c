@@ -1,26 +1,9 @@
 #include <malloc.h>
 
-#include "libDouble.h"
+#include "libMatematicaDouble.h"
 #include "utils.h"
-#include "libGauss.h"
+#include "libMatriz.h"
 #include "likwid.h"
-
-/* vetor de pontos, coeficientes do SL, independentes do SL, numero de pontos, grau do polinomio */
-void nome(ponto_t *xy, Intervalo_t *coeficientes, Intervalo_t *independentes, int_t numPontos, int_t numCoeficientesG) {
-	for(int_t i = 0; i < numCoeficientesG; i++) {
-
-		for(int_t j = 0; j < numCoeficientesG; j++) {
-			
-			for(int_t k = 0; k < numPontos; k++) {
-				coeficientes[(i * numCoeficientesG) + j] = soma_intervalos(coeficientes[(i * numCoeficientesG) + j], mult_intervalos(potenciacao(xy[k].x, i), potenciacao(xy[k].x, j)));
-			}
-		}
-
-		for(int k = 0; k < numPontos; k++) {
-			independentes[i] = soma_intervalos(independentes[i], mult_intervalos(potenciacao(xy[k].x, i), xy[k].y));
-		}
-	}
-}
 
 int main() {
 	int_t n = 0, k = 0;
@@ -63,7 +46,7 @@ int main() {
 
 	// Essa função é responsável por gerar os coeficientes e termos independentes do SL
 
-	nome(pontos, coeficientes, independentes, k, (n + 1));
+	geraSLMinimosQuadrados(pontos, coeficientes, independentes, k, (n + 1));
 
 	printf("Coeficientes:\n");
 	for(int_t i = 0; i < n+1; i++) {
@@ -90,7 +73,7 @@ int main() {
     LIKWID_MARKER_START("SOLUCAO_SL");
 	
 	tempoSolSL.d = timestamp();
-	retrossubs(coeficientes, independentes, solucao, (n + 1));
+	solucaoSL(coeficientes, independentes, solucao, (n + 1));
 	tempoSolSL.d = timestamp() - tempoSolSL.d;
 
 	LIKWID_MARKER_STOP("SOLUCAO_SL");

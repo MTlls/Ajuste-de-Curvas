@@ -1,5 +1,5 @@
-#ifndef _LIBDOUBLE_H_
-#define _LIBDOUBLE_H_
+#ifndef _LIBMATEMATICADOUBLE_H_
+#define _LIBMATEMATICADOUBLE_H_
 
 #include <stdint.h>
 #include <stdio.h>

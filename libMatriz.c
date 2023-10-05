@@ -1,5 +1,5 @@
-#include "libGauss.h"
-#include "libDouble.h"
+#include "libMatriz.h"
+#include "libMatematicaDouble.h"
 #include <math.h>
 
 int encontraMax(Intervalo_t* matriz, int tam, int i) {
@@ -39,7 +39,7 @@ void eliminacaoGauss(Intervalo_t* matriz, Intervalo_t* independentes, int n) {
     }
 }
 
-void retrossubs(Intervalo_t* matriz, Intervalo_t* independentes, Intervalo_t* solucao, int n) {
+void solucaoSL(Intervalo_t* matriz, Intervalo_t* independentes, Intervalo_t* solucao, int n) {
     for (int i = n - 1; i >= 0; i--) {
         solucao[i] = independentes[i];
 
@@ -105,4 +105,20 @@ void imprimeVetorLinha(Intervalo_t* vetor, int n) {
         printIntervalo(vetor[i]);
         putchar('\n');
     }
+}
+
+void geraSLMinimosQuadrados(ponto_t *xy, Intervalo_t *coeficientes, Intervalo_t *independentes, int_t numPontos, int_t numCoeficientesG) {
+	for(int_t i = 0; i < numCoeficientesG; i++) {
+
+		for(int_t j = 0; j < numCoeficientesG; j++) {
+			
+			for(int_t k = 0; k < numPontos; k++) {
+				coeficientes[(i * numCoeficientesG) + j] = soma_intervalos(coeficientes[(i * numCoeficientesG) + j], mult_intervalos(potenciacao(xy[k].x, i), potenciacao(xy[k].x, j)));
+			}
+		}
+
+		for(int k = 0; k < numPontos; k++) {
+			independentes[i] = soma_intervalos(independentes[i], mult_intervalos(potenciacao(xy[k].x, i), xy[k].y));
+		}
+	}
 }

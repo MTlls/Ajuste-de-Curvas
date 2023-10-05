@@ -1,7 +1,7 @@
-#ifndef _LIBGAUSS_H_
-#define _LIBGAUSS_H_
+#ifndef _LIBMATRIZ_H_
+#define _LIBMATRIZ_H_
 
-#include "libDouble.h"
+#include "libMatematicaDouble.h"
 
 /**
  * Função que encontra a maior linha da coluna i, o critério escolhido foi o intervalo com o maior limite superior. O paramêtro tam é a ordem da matriz quadrada (se espera que seja quadrada).
@@ -14,10 +14,10 @@ int encontraMax(Intervalo_t* matriz, int tam, int i);
 void eliminacaoGauss(Intervalo_t* matriz, Intervalo_t* independentes, int n);
 
 /**
- * Função que realiza a retrosubstituição do sistema linear COM INTERVALOS.
+ * Função que realiza a retrosubstituição do sistema linear COM INTERVALOS e retorna a solucao do sistema no parametro solucao.
  * OBS: é esperado que o sistema esteja triangularizado, com a linha mais baixo com apenas 1 coeficiente.
 */
-void retrossubs(Intervalo_t* matriz, Intervalo_t* independentes, Intervalo_t* variaveis, int n);
+void solucaoSL(Intervalo_t* matriz, Intervalo_t* independentes, Intervalo_t* solucao, int n);
 
 /**
  * Função que calcula os resíduo, que é a diferença entre o ponto Yi a função encontrada para Xi, ou seja: Ri = Yi - f(Xi)
@@ -38,5 +38,11 @@ void imprimeVetor(Intervalo_t *vetor, int n);
  * Função que imprime o vetor com \n a cada elemento
 */
 void imprimeVetorLinha(Intervalo_t* vetor, int n);
+
+/**
+ * Função que gera os coeficientes e os termos independentes do SL, utilizando-se do método dos mínimos quadrados.
+ * OBS: com intervalos.
+*/
+void geraSLMinimosQuadrados(ponto_t *xy, Intervalo_t *coeficientes, Intervalo_t *independentes, int_t numPontos, int_t numCoeficientesG);
 
 #endif
