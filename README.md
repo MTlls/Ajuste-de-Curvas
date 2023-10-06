@@ -1,27 +1,35 @@
 Matheus Telles Batista - GRR20211774
 Wilian Pereira dos Santos - GRR20203936
 
-o trabalho foi elaborado para a disciplina de Introdução à Computação com o intuito de realizar operações aritméticas básicas com números com ponto flutuante (somente os floats).
+O presente trabalho foi elaborado para o trabalho 1 de Introdução a Computação Científica.
+O intuito do trabalho é realizar o método dos mínimos quadrados (regressão linear) com intervalos de dupla precisão.
 
 ##### formato de entrada
 ###
-    X1 O1 X2 O2 X3 O3 X4 O4 X5
-    onde cada X é um numero e cada O é uma das quatro operacoes basicas ( "+", "-", "*", "/") ~
+    n
+    k
+    X0 Y0
+    X1 Y1
+    [...]
+    Xk Yk
 
-###### a conta será feita com o seguinte padrao:
-##
-    (((X1 O1 X2) O2 X3) O3 X4) O4 X5
+Onde:
+* **n** é o grau de entrada desejado para a função
+* **k** é a quantidade de conjunto de pontos.
+* Xi e Yi pontos, até Xk
 
 ##### modo de uso
 ###
 ```
 make
-./analise
-aqui vai a sua expressão no formato citado 
+./ajustePol < entrada.in > saida.out
+```
+ou
+
+```
+source flops.sh entrada.in
 ```
 
 ### erros ou problemas encontrados
 
 nâo encontramos muitos erros que nâo fossem dúvidas de interpretação, como as divergências de valores nos números de máquina, isso gerou muita discussão entre a dupla e não soubemos como contornar sem perguntar para os professores.
-
-
