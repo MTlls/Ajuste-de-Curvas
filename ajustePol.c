@@ -10,6 +10,7 @@ int main() {
 	real_t tempoGeraSL, tempoSolSL;
 	ponto_t *pontos = NULL;
 	Intervalo_t *coeficientes = NULL;
+	Intervalo_t *coeficientesCopia = NULL;
 	Intervalo_t *independentes = NULL;
 	Intervalo_t *solucao = NULL;
 	Intervalo_t *residuo = NULL;
@@ -30,6 +31,7 @@ int main() {
 
 	// Inicializa-se um vetor 2d de (n+1)^2 linhas.
 	coeficientes = (Intervalo_t *) calloc(((n+1)*(n+1)), sizeof(Intervalo_t));
+	coeficientesCopia = (Intervalo_t *) calloc(((n+1)*(n+1)), sizeof(Intervalo_t));
 
 	// Inicializa-se um array de K termos independentes, todos com 0.
 	independentes = (Intervalo_t *) calloc((n + 1), sizeof(Intervalo_t));
@@ -50,6 +52,7 @@ int main() {
 
 	tempoGeraSL.d = timestamp();
 	geraSLMinimosQuadrados(pontos, coeficientes, independentes, k, (n + 1));
+	memcpy(coeficientesCopia, coeficientes, ((n+1)*(n+1))* sizeof(Intervalo_t));
 	eliminacaoGauss(coeficientes, independentes, (n + 1));
     tempoGeraSL.d = timestamp() - tempoGeraSL.d;
     LIKWID_MARKER_STOP("GERACAO_SL");
@@ -57,7 +60,7 @@ int main() {
 	printf("Coeficientes:\n");
 	for(int_t i = 0; i < n+1; i++) {
 		for(int_t j = 0; j < n+1; j++) {
-			printIntervalo(coeficientes[((n+1)* i) + j]);
+			printIntervalo(coeficientesCopia[((n+1)* i) + j]);
 			putchar(' ');
 		}
 		printf("\n");
@@ -90,6 +93,7 @@ int main() {
     
 	free(pontos);
 	free(coeficientes);
+	free(coeficientesCopia);
 	free(independentes);
 	free(solucao);
 	free(residuo);
