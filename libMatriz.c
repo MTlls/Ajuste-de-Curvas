@@ -110,6 +110,8 @@ void imprimeVetorLinha(Intervalo_t* vetor, int n) {
 void geraSLMinimosQuadrados(ponto_t *xy, Intervalo_t *coeficientes, Intervalo_t *independentes, int_t numPontos, int_t numCoeficientesG) {
 	// Temos 2(n-1)-1 = 2n-2-1 = 2n-3 coeficientes que se repetem.
 	int_t numeroRepeticoes;
+    // Para copia de valores
+    int_t copiasFeitas, cCopiado, linhaCopia, colunaCopia;
     int_t ult_linha , grauN;
     Intervalo_t *repetidos;
     numeroRepeticoes = (2 * numCoeficientesG) - 3;
@@ -122,7 +124,7 @@ void geraSLMinimosQuadrados(ponto_t *xy, Intervalo_t *coeficientes, Intervalo_t 
     ult_linha = (numCoeficientesG -1) * (numCoeficientesG);
     grauN = numCoeficientesG - 1; 
 
-    // Necessario apenas a primeira linha inteira [0..n] e na ultima linha [1..n], que é a linha final inteira menos o termo da diagonal inversa, que é o mesmo termo do final da primeira linha.
+    // Necessario apenas a primeira linha inteira [0..n] e na ultima linha [1..n], que é a linha final inteira menos o termo da diagonal secundária, que é o mesmo termo do final da primeira linha.
 
     // Começa em [0][1], pois ja foi computado o [0][0]
     for(int_t j = 1; j < numCoeficientesG; j++) {
@@ -151,17 +153,19 @@ void geraSLMinimosQuadrados(ponto_t *xy, Intervalo_t *coeficientes, Intervalo_t 
 	    coeficientes[(ult_linha) + numCoeficientesG-1] = soma_intervalos(coeficientes[(ult_linha) + numCoeficientesG-1], mult_intervalos(potenciacao(xy[k].x, (grauN)), potenciacao(xy[k].x, numCoeficientesG-1)));
 	}
 
-    // escreve dos coeficientes pelo triangulo superior
-    // cCopiado para o coeficiente copiado em repetidos[]
-    int_t cCopiado, linhaCopia, colunaCopia;
+    // escreve os coeficientes da parte superior
+    // cCopiado é o índice para o coeficiente copiado em repetidos[]
+    // copia a partir da segunda linha, por isso linhaCopia é 1
     for (cCopiado = 1; cCopiado < numCoeficientesG; cCopiado++) {
         for (linhaCopia = 1, colunaCopia = cCopiado-1; colunaCopia >= 0; linhaCopia++, colunaCopia--) {
             coeficientes[(linhaCopia * numCoeficientesG) + colunaCopia] = repetidos[cCopiado-1]; 
         }
     }
 
-    int_t copiasFeitas = 0;
-    // Copia os coeficientes da parte superior e inferior da matriz
+    copiasFeitas = 0;
+    // Copia os coeficientes da parte inferior da matriz
+    // copia a partir da penúltima linha, por isso linhaCopia é o número de coeficientes - 1.
+    // Foi usado uma variavel copiasFeitas para iterar as colunas escritas (colunaCopia).
     for (cCopiado = numCoeficientesG -1; cCopiado < numeroRepeticoes; cCopiado++) {
         for (linhaCopia = numCoeficientesG -1, colunaCopia = copiasFeitas+1; colunaCopia < numCoeficientesG; linhaCopia--, colunaCopia++) {
             coeficientes[(linhaCopia * numCoeficientesG) + colunaCopia] = repetidos[cCopiado];
