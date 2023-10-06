@@ -54,15 +54,6 @@ int main() {
     tempoGeraSL.d = timestamp() - tempoGeraSL.d;
     LIKWID_MARKER_STOP("GERACAO_SL");
 	
-	printf("Coeficientes:\n");
-	for(int_t i = 0; i < n+1; i++) {
-		for(int_t j = 0; j < n+1; j++) {
-			printIntervalo(coeficientes[((n+1)* i) + j]);
-			putchar(' ');
-		}
-		printf("\n");
-	}
-
 
 	solucao = (Intervalo_t *)calloc((n + 1), sizeof(Intervalo_t));
 
@@ -75,11 +66,14 @@ int main() {
 
 	LIKWID_MARKER_STOP("SOLUCAO_SL");
 	
-	// Aloca os resíduos
-	residuo = calculaResiduo(solucao, pontos, n, k);
-
     // Fecha o marcador do likwid
     LIKWID_MARKER_CLOSE;
+
+	printf("Solução:\n");
+	imprimeVetor(solucao, n+1);
+
+	// Aloca os resíduos
+	residuo = calculaResiduo(solucao, pontos, n, k);
 	
 	printf("\nResíduo:\n");
 	imprimeVetorLinha(residuo, k);
